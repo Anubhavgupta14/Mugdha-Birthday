@@ -1,40 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Operation: Heal Planet Earth 🌍
 
-## Getting Started
+A birthday escape-room game for Mugdha Pradhan, Founder & CEO of iThrive, from the team.
 
-First, run the development server:
+Planet Earth has a fever. The Sugar Syndicate (Lord Glucose Spike, Baron Seed Oil and Count Cortisol) has wrecked Gaia's gut. The Chief Healing Officer has to find the root cause across 3 levels and 6 puzzles. Each puzzle gives her a seed letter, and each level ends with a gift.
+
+| Level | Puzzles | Gift |
+| --- | --- | --- |
+| 1 · The Gut of Gaia | Gutder (swipe to feed the microbiome), Microbiome Vault (code lock) | 🔥 The Phoenix + "Girl on Fire" |
+| 2 · The Sugar Syndicate's Power Plant | Cipher wheel, Flatten the glucose curve | 🐉 The Dragons + "Believer" |
+| 3 · The Root of All Things | Planet ↔ body diagnosis, Panch Mahabhuta sequence | 💰 ₹25 Cr manifestation + "Unstoppable" |
+| Final Gate | Unscramble the seed letters | 🪷 Divine Mother's blessing, a healed Earth, Hall of Fame, wishes and a playlist |
+
+Every puzzle has 3 hints from Mito the mitochondrion, then a 👑 **CEO Override** button that skips it.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Progress is saved in localStorage, so a refresh resumes the quest. To jump to any stage while previewing, use `?stage=<name>`, e.g. `/?stage=vault`, `/?stage=gift2` or `/?stage=finale`. Stage names are listed in `STAGES` in `src/pages/index.tsx`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Edit the words
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- **Wishes, achievements, songs and the blessing:** `src/game/content.ts`. The wishes are placeholders signed by teams, so swap in real names and messages.
+- **Puzzle briefs, hints and solved lines:** `src/game/puzzles.ts`.
+- **Photos:** `public/img/` holds the optimized portrait and a transparent cut-out made from the original shoot photo.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+All music in the game is synthesized live with the Web Audio API. The English songs are YouTube embeds, so they need an internet connection.
+# Mugdha-Birthday
