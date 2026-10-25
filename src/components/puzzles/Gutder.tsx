@@ -32,7 +32,6 @@ export default function Gutder({ onSolve }: PuzzleApi) {
   const [binned, setBinned] = useState(0);
   const [flash, setFlash] = useState<"good" | "bad" | null>(null);
   const card = useRef<HTMLDivElement>(null);
-  const area = useRef<HTMLDivElement>(null);
   const busy = useRef(false);
   const deckRef = useRef(deck);
   const top = deck[0];
@@ -96,19 +95,30 @@ export default function Gutder({ onSolve }: PuzzleApi) {
   useEffect(() => {
     if (!card.current) return;
     gsap.fromTo(card.current, { scale: 0.85, opacity: 0, x: 0, rotate: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" });
+    // No bounds: on a phone the card nearly fills its area, so bounds left it ~20px of travel.
+    // A swipe counts past ~22% of the card width, or for a quick flick. Both are measured from the
+    // finger itself, since a fast flick can end before Draggable renders a single drag frame.
+    const threshold = Math.min(90, card.current.offsetWidth * 0.22);
+    let startX = 0;
+    let startT = 0;
     const [d] = Draggable.create(card.current, {
       type: "x,y",
-      bounds: area.current ?? undefined,
-      edgeResistance: 0.6,
+      onPress() {
+        startX = this.pointerX;
+        startT = performance.now();
+      },
       onDrag() {
         gsap.set(this.target, { rotate: this.x / 14 });
-        setFlash(this.x > 60 ? "good" : this.x < -60 ? "bad" : null);
+        setFlash(this.x > threshold * 0.66 ? "good" : this.x < -threshold * 0.66 ? "bad" : null);
       },
       onRelease() {
         setFlash(null);
-        if (Math.abs(this.x) > 90) {
+        const dx = this.pointerX - startX;
+        const speed = dx / Math.max(1, performance.now() - startT); // px per ms
+        const flick = Math.abs(dx) > 35 && Math.abs(speed) > 0.25;
+        if (Math.abs(dx) > threshold || flick) {
           gsap.set(this.target, { y: 0 });
-          decideRef.current(this.x > 0);
+          decideRef.current(dx > 0);
         } else gsap.to(this.target, { x: 0, y: 0, rotate: 0, duration: 0.4, ease: "back.out(2)" });
       },
     });
@@ -131,7 +141,7 @@ export default function Gutder({ onSolve }: PuzzleApi) {
   return (
     <div className="grid items-start gap-6 md:grid-cols-[1fr_300px]">
       <div className="flex flex-col items-center">
-        <div ref={area} className="relative flex h-[380px] w-full max-w-sm items-center justify-center overflow-visible">
+        <div className="relative flex h-[380px] w-full max-w-sm items-center justify-center overflow-visible">
           {deck[1] && <div className="glass absolute h-[330px] w-[86%] translate-y-3 scale-95 rounded-3xl opacity-60" />}
           {top ? (
             <div
